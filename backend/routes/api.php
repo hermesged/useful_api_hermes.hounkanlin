@@ -16,6 +16,11 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/shorten', [ShortLinkController::class, 'shorten']);
         Route::get('/links', [ShortLinkController::class, 'index']);
         Route::delete('/links/{id}', [ShortLinkController::class, 'destroy']);
+
+        Route::get('/wallet', [WalletController::class, 'show']);
+        Route::post('/wallet/topup', [WalletController::class, 'topup']);
+        Route::post('/wallet/transfer', [WalletController::class, 'transfer']);
+        Route::get('/wallet/transactions', [WalletController::class, 'transactions']);
     });
 });
 
