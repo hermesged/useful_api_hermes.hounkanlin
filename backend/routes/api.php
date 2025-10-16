@@ -1,19 +1,27 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ModuleController;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "api" middleware group. Make something great!
-|
-*/
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/modules', [ModuleController::class, 'index']);
+    Route::post('/modules/{id}/activate', [ModuleController::class, 'activate']);
+    Route::post('/modules/{id}/deactivate', [ModuleController::class, 'deactivate']);
+
+    Route::middleware('check.module.active')->group(function () {
+        Route::post('/shorten', [ShortLinkController::class, 'shorten']);
+        Route::get('/links', [ShortLinkController::class, 'index']);
+        Route::delete('/links/{id}', [ShortLinkController::class, 'destroy']);
+
+        Route::get('/wallet', [WalletController::class, 'show']);
+        Route::post('/wallet/topup', [WalletController::class, 'topup']);
+        Route::post('/wallet/transfer', [WalletController::class, 'transfer']);
+        Route::get('/wallet/transactions', [WalletController::class, 'transactions']);
+    });
 });
+
+Route::get('/s/{code}', [ShortLinkController::class, 'redirect']);
