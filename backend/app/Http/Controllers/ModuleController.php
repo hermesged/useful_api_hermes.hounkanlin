@@ -42,4 +42,5 @@ class ModuleController extends Controller
         );
         return response()->json(['message' => 'Module deactivated'], 200);
     }
+
 }

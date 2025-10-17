@@ -1,6 +1,6 @@
 <template>
   <div>
-    <RouterView />
+      <h2>Incription ou Connexion réussie</h2>
   </div>
 </template>
 
